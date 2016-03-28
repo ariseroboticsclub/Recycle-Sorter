@@ -11,6 +11,7 @@ from drawnow import *
 
 xArray = []
 yArray = []
+zArray = []
 
 arduinoData = serial.Serial('/dev/tty.usbmodem1411',9600)
 plt.ion()
@@ -22,6 +23,9 @@ def makeFig():
     plt2=plt.twinx()
     plt2.plot(yArray, 'b^-', label='plastic')
     plt2.legend(loc='upper center')
+    plt3=plt.twinx()
+    plt3.plot(zArray, 'gD-', label='can')
+    plt3.legend(loc='lower left')
     #theres only two graph here
     #gonna add another one
 
@@ -34,13 +38,16 @@ while True:
     dataArray = arduinoString.split(',')
     x = float(dataArray[0])
     y = float(dataArray[1])
+    z = float(dataArray[2])
     xArray.append(x)
     yArray.append(y)
+    zArray.append(z)
     drawnow(makeFig)
     plt.pause(.01)
     cnt=cnt+1
     if (cnt>10):
         xArray.pop(0)
         yArray.pop(0)
+        zArray.pop(0)
 
-    print x, ",", y
+    print x, ",", y, ",", z
